@@ -1,0 +1,21 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: rclob
+  namespace: rclob
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rclob
+  triggers:
+    - type: redis
+      metadata:
+        host: redis://redis-client:6379/0
+        listName: order-events
+        listLength: 10
+        queueLength: "5"
+  pollingInterval: 15
+  cooldownPeriod: 30
+  minReplicaCount: 0
+  maxReplicaCount: 10

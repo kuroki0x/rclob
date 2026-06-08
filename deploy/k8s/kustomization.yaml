@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rclob
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - service.yaml
+  - deployment.yaml
+  - networkpolicy.yaml
+  - pdb.yaml
+
+# Default HPA is disabled; enable per-environment overlays
+# - hpa.yaml
+
+# KEDA ScaledObject is optional; enable in staging/production
+# - scaledobject.yaml
+
+commonLabels:
+  app: rclob
+  managed-by: kustomize
+
+images:
+  - name: rclob
+    newName: registry.example.com/rclob
+    newTag: latest
